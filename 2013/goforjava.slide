@@ -361,11 +361,10 @@ Java와 마찬가지로 변형불가능한 타입(immutable type)
 #########################
 * GDG Korea Golang
 
-- [[http://golang.org][http://golang.org]]
-
 .image goforjava/GDG_Korea_Golang.png
 
-- [[https://plus.google.com/112714242728066184635/][Google+ Community]]
+- [[http://golang.kr][http://golang.kr]]
+- [[https://plus.google.com/112714242728066184635/][Google+ Community]] *
 - [[https://groups.google.com/forum/?fromgroups#!forum/golang-korea][Google Groups]]
 - [[http://go-tour-kr.appspot.com][A Tour of Go in Korean]]
 
