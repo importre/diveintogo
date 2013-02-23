@@ -15,7 +15,7 @@ GDG Korea Golang
 - Arrays and Slides
 - Strings
 - Collections
-- Handling Erros
+- Handling Errors
 - Goroutines
 
 ###############################################################################
@@ -44,7 +44,7 @@ GDG Korea Golang
 ###############################################################################
 
 #########################
-* The Structure of a .go
+* The Structure of a .go (1/2)
 
 - hellogo.go
 
@@ -56,7 +56,7 @@ GDG Korea Golang
 
 
 #########################
-* The Structure of a .go
+* The Structure of a .go (2/2)
 
 Three parts
 
@@ -87,7 +87,7 @@ Three parts
 
 
 #########################
-* Functions
+* Functions (1/2)
 
 *func* 키워드 사용
 
@@ -107,7 +107,7 @@ Three parts
 
 
 #########################
-* Functions
+* Functions (2/2)
 
 - closure
 
@@ -115,7 +115,7 @@ Three parts
 
 
 #########################
-* Conditions
+* Conditions (1/2)
 
 - *if*
 
@@ -130,7 +130,7 @@ Three parts
     }
 
 #########################
-* Conditions
+* Conditions (2/2)
 
 - *switch*
 
@@ -139,7 +139,7 @@ Three parts
 `fallthrough` 를 넣으면 Java와 같이 `break` 가 필요
 
 #########################
-* Loop
+* Loop (1/2)
 
 *for* 키워드 *만* 사용
 Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
@@ -159,7 +159,7 @@ Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
 
 
 #########################
-* Loop
+* Loop (2/2)
 
 - Forever
 
@@ -181,7 +181,7 @@ Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
 
 
 #########################
-* Structures
+* Structures and Methods
 
 *type*, *struct* 키워드 사용
 
@@ -202,7 +202,7 @@ Go 컴파일러 역시 함수 내에서 변수가 선언되면 스택에 할당�
 
 - private
 
-    소문자로 시작, 다른 패키지
+    소문자로 시작, 다른 패키지에서 접근 불가
 
 
 #########################
@@ -230,7 +230,7 @@ Objective-C의 `category` 와 비슷하게
 .code goforjava/interfaces1.go /START OMIT/,/END OMIT/
 
 #########################
-* Interfaces (1/2)
+* Interfaces (2/2)
 
 .play goforjava/interfaces2.go /START OMIT/,/END OMIT/
 
@@ -263,7 +263,7 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 ###############################################################################
 
 ###############################################################################
-* Handling Erros
+* Handling Errors
 ###############################################################################
 
 ###############################################################################
@@ -282,5 +282,5 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 - [[https://plus.google.com/112714242728066184635/][Google+ Community]]
 - [[https://groups.google.com/forum/?fromgroups#!forum/golang-korea][Google Groups]]
-- [[http://go-tour-kr.appspot.com][A Tour of Go]]
+- [[http://go-tour-kr.appspot.com][A Tour of Go in Korean]]
 
