@@ -17,7 +17,7 @@ func IsHangul(c rune) bool {
 }
 
 func main() {
-	for _, c := range "a고" {
+	for _, c := range "go고" {
 		fmt.Printf("%c\t%t\n", c, IsHangul(c))
 	}
 }

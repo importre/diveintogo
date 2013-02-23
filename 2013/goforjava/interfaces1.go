@@ -14,7 +14,7 @@ type Segment struct {
 }
 
 func (self *Point) ToString() string {
-	return fmt.Sprintf("x: %v\ny: %v", self.x, self.y)
+	return fmt.Sprintf("x: %v, y: %v", self.x, self.y)
 }
 
 func (self *Segment) ToString() string {
@@ -30,9 +30,9 @@ type Shaper interface { // HL
 func main() {
 	var shaper Shaper
 
-	shaper = &Point{}
-	fmt.Println(shaper)
+	shaper = &Point{1, 2}
+	fmt.Println(shaper.ToString())
 
-	shaper = &Segment{}
-	fmt.Println(shaper)
+	shaper = &Segment{Point{3, 4}, Point{5, 6}}
+	fmt.Println(shaper.ToString())
 }

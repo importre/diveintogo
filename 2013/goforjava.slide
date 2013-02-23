@@ -50,7 +50,7 @@ GDG Korea Golang
 
 .play goforjava/hellogo.go
 
-- hellojava.java
+- HelloJava.java
 
 .code goforjava/HelloJava.java
 
@@ -97,7 +97,7 @@ Three parts
 
 같은 타입이 연속이면 마지막에 한번 만 써도 됨
 
-    func add(i int, j int) int {
+    func add(i, j int) int {
         return i + j
     }
 
@@ -167,7 +167,7 @@ Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
         // do something
     }
 
-- with range
+- with `range`
 
 .play goforjava/loop.go /START OMIT/,/END OMIT/
 
@@ -221,7 +221,7 @@ Go 컴파일러 역시 함수 내에서 변수가 선언되면 스택에 할당�
 `struct` 뿐만 아니라 어떤 타입이든 method를 정의할 수 있음
 
 Objective-C의 `category` 와 비슷하게
-함수 앞에 *receiver* (여기선 `self`) 를 정의하면 method 역할을 함
+함수 명 앞에 *receiver* (여기선 `self`) 를 정의하면 method 역할을 함
 
 
 #########################
@@ -244,8 +244,11 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 묵시적 형변환을 허용하지 않음
 
-.play goforjava/types.go /START OMIT/,/END OMIT/
+.play goforjava/types1.go /START OMIT/,/END OMIT/
 
+같은 타입이어도 형변환 필요
+
+.play goforjava/types2.go /START OMIT/,/END OMIT/
 
 ###############################################################################
 * Arrays and Slides
