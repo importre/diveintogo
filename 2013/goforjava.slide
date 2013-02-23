@@ -24,11 +24,13 @@ GDG Korea Golang
 ###############################################################################
 
 #########################
-* UTF-8
+* Go Designers
 
-- Rob Pike
+.image goforjava/rob_pike.png 255 300
 
-.image goforjava/rob_pike.png
+- 롭 파이크(Rob Pike)
+- 켄 톰슨(Ken Thompson)
+- 로버트 그리스머(Robert Griesemer)
 
 
 #########################
@@ -300,7 +302,7 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 * Iterating (2/2)
 
 반복할 때마다 경계를 확인하기 보다는
-루프문 하나당 한번 확인 할 수 있도록 `range` 를 사용
+루프문 하나당 경계를 한 번 확인 할 수 있도록 `range` 를 사용
 
 .play goforjava/iter2.go /START OMIT/,/END OMIT/
 
@@ -308,6 +310,37 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 ###############################################################################
 * Strings
 ###############################################################################
+
+#########################
+* UTF-8 Designers
+
+- Rob Pike
+- Ken Thompson
+
+#########################
+* Strings
+
+Go는 UTF-8을 사용
+Java와 마찬가지로 변형불가능한 타입(immutable type)
+배열은 아니지만 배열처럼 slice 사용 가능
+
+인덱스 사용시 주의할 것
+
+.play goforjava/loop.go /START OMIT/,/END OMIT/
+
+`rune` 타입 이용
+
+.play goforjava/strings.go /START OMIT/,/END OMIT/
+
+
+#########################
+* Regular Expression
+
+아래 자료 참조
+
+- [[https://github.com/importre/gore/wiki/package-regexp][package regexp]] : 정규식 패키지 설명(한글)
+- [[http://goregex.appspot.com/][gore]] : package regexp 웹 테스터
+
 
 ###############################################################################
 * Collections
