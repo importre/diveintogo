@@ -1,0 +1,18 @@
+application: diveintogo
+version: 1
+runtime: go
+api_version: go1
+
+handlers:
+- url: /goforjava
+  static_dir: goforjava
+- url: /static
+  static_dir: present/static
+- url: /present/js
+  static_dir: present/js
+- url: /present/templates
+  static_dir: present/templates
+- url: /.*
+  script: _go_app
+
+nobuild_files: ^(?!(present|code.google.com)/)

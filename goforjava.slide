@@ -1,0 +1,283 @@
+Go for Java Programmers
+A Go Primer
+2 Mar 2013
+
+허재위
+GDG Korea Golang
+@importre
+
+
+#########################
+* Agenda
+
+- Introducing Go
+- Hello Golang!
+- Arrays and Slides
+- Strings
+- Collections
+- Handling Erros
+- Goroutines
+
+###############################################################################
+* Introducing Go
+###############################################################################
+
+#########################
+* UTF-8
+
+- Rob Pike
+
+.image goforjava/rob_pike.png
+
+
+#########################
+* Advantages
+
+- 동시성(Conccurency)
+- 빠른 속도
+- 간결한 문법
+- 낮은 의존성
+
+
+###############################################################################
+* Hello Golang!
+###############################################################################
+
+#########################
+* The Structure of a .go
+
+- hellogo.go
+
+.play goforjava/hellogo.go
+
+- hellojava.java
+
+.code goforjava/HelloJava.java
+
+
+#########################
+* The Structure of a .go
+
+Three parts
+
+- package
+
+    main 인 경우 반드시 func main()이 존재해야 함
+    Java와 달리 파라미터 없음 (전역으로 존재)
+
+- import
+
+    Java와 달리 코드가 링크될 때 package가 import 됨
+    Go 프로그램이 package가 없어서 죽지 않도록 보장
+    import를 통해 참조되는 package에 대해 플래그를 링커에 제공할 필요 없음
+
+- 기타
+
+    타입, 변수, 함수 선언 등
+
+
+#########################
+* Variables
+
+.play goforjava/variables.go /START OMIT/,/END OMIT/
+
+- `var` 키워드 사용
+- `:=` 초기화 연산자 사용
+- Java와 다르게 원시 타입의 포인터를 만들 수 있음
+
+
+#########################
+* Functions
+
+*func* 키워드 사용
+
+    func add(i int, j int) int {
+        return i + j
+    }
+
+같은 타입이 연속이면 마지막에 한번 만 써도 됨
+
+    func add(i int, j int) int {
+        return i + j
+    }
+
+미리 리턴 변수 명을 정할 수 있음
+
+.play goforjava/functions1.go /START OMIT/,/END OMIT/
+
+
+#########################
+* Functions
+
+- closure
+
+.play goforjava/functions2.go /START OMIT/,/END OMIT/
+
+
+#########################
+* Conditions
+
+- *if*
+
+    if x > 0 {
+        return
+    }
+
+- *if* with temporary variable
+    if err := DoSth(); err != nil {
+        log.Println(err)
+        return err
+    }
+
+#########################
+* Conditions
+
+- *switch*
+
+.play goforjava/switch.go /START OMIT/,/END OMIT/
+
+`fallthrough` 를 넣으면 Java와 같이 `break` 가 필요
+
+#########################
+* Loop
+
+*for* 키워드 *만* 사용
+Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
+`++i` 는 syntax error
+
+- `for`
+
+    for i := 0; i < size; i++ {
+        // do something
+    }
+
+- `while`
+
+    for i > 0 {
+        // do something
+    }
+
+
+#########################
+* Loop
+
+- Forever
+
+    for {
+        // do something
+    }
+
+- with range
+
+.play goforjava/loop.go /START OMIT/,/END OMIT/
+
+
+#########################
+* Enumerations
+
+*const*, *iota* 키워드 사용
+
+.play goforjava/enumerations.go /START OMIT/,/END OMIT/
+
+
+#########################
+* Structures
+
+*type*, *struct* 키워드 사용
+
+.code goforjava/structures.go /START OMIT/,/END OMIT/
+
+Go 컴파일러 역시 함수 내에서 변수가 선언되면 스택에 할당됨
+하지만, 그 변수의 주소가 반환되면 힙에 할당 됨
+
+
+#########################
+* Methods (1/2)
+
+.play goforjava/methods1.go /START OMIT/,/END OMIT/
+
+- public
+  
+    대문자로 시작
+
+- private
+
+    소문자로 시작, 다른 패키지
+
+
+#########################
+* package
+
+그림 설명 // friend
+
+
+#########################
+* Methods (2/2)
+
+- Java의 `Integer` class
+
+.play goforjava/methods2.go /START OMIT/,/END OMIT/
+
+`struct` 뿐만 아니라 어떤 타입이든 method를 정의할 수 있음
+
+Objective-C의 `category` 와 비슷하게
+함수 앞에 *receiver* (여기선 `self`) 를 정의하면 method 역할을 함
+
+
+#########################
+* Interfaces (1/2)
+
+.code goforjava/interfaces1.go /START OMIT/,/END OMIT/
+
+#########################
+* Interfaces (1/2)
+
+.play goforjava/interfaces2.go /START OMIT/,/END OMIT/
+
+Java와 다르게 명시적으로 붙여줄 필요 없음
+`struct` 가 `interface` 보다 먼저 선언되어야 하는 것은 아님
+3rd party `struct` 와 결합 용이
+
+
+#########################
+* Casting Types
+
+묵시적 형변환을 허용하지 않음
+
+.play goforjava/types.go /START OMIT/,/END OMIT/
+
+
+###############################################################################
+* Arrays and Slides
+###############################################################################
+
+###############################################################################
+* Strings
+###############################################################################
+
+###############################################################################
+* Collections
+###############################################################################
+
+###############################################################################
+* Handling Erros
+###############################################################################
+
+###############################################################################
+* Goroutines
+###############################################################################
+
+###############################################################################
+* GDG Korea Golang
+###############################################################################
+
+* GDG Korea Golang
+
+- [[http://golang.org][http://golang.org]]
+
+.image goforjava/GDG_Korea_Golang.png
+
+- [[https://plus.google.com/112714242728066184635/][Google+ Community]]
+- [[https://groups.google.com/forum/?fromgroups#!forum/golang-korea][Google Groups]]
+- [[http://go-tour-kr.appspot.com][A Tour of Go]]
+
