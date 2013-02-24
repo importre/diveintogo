@@ -28,7 +28,7 @@ func main() {
 	fmt.Println("start")
 	defer fmt.Println("stop")
 
-	go SearchBlog() // HL
+	go SearchBlog()  // HL
 	go SearchImage() // HL
 	time.Sleep(10 * time.Second)
 	fmt.Println()

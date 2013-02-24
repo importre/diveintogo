@@ -14,7 +14,7 @@ func main() {
 	l.PushBack(1)
 
 	for e := l.Front(); e != nil; e = e.Next() {
-        fmt.Println(e.Value)
+		fmt.Println(e.Value)
 	}
 }
 

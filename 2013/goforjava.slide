@@ -98,7 +98,7 @@ Three parts
         return i + j
     }
 
-같은 타입이 연속이면 마지막에 한번 만 써도 됨
+같은 타입이 연속이면 마지막에 한번만 써도 됨
 
     func add(i, j int) int {
         return i + j
@@ -126,7 +126,7 @@ Three parts
         return
     }
 
-- *if* with temporary variable
+- *if* with a temporary variable
     if err := DoSth(); err != nil {
         log.Println(err)
         return err
@@ -346,8 +346,11 @@ Java와 마찬가지로 변형불가능한 타입(immutable type)
 * Collections
 ###############################################################################
 
+* Collections
+
 - `map`
 - `list`
+
 
 #########################
 * map? set!
@@ -392,7 +395,7 @@ key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버
 
 
 #########################
-* error (1/2)
+* error (1/3)
 
 아래 인터페이스를 등록해 놓으면, `error` 를 반환할 때 자동 호출
 
@@ -402,9 +405,15 @@ key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버
 
 
 #########################
-* error (2/2)
+* error (2/3)
 
-.play goforjava/error.go /START OMIT/,/END OMIT/
+.play goforjava/error1.go /START OMIT/,/END OMIT/
+
+
+#########################
+* error (3/3)
+
+.play goforjava/error2.go
 
 
 #########################
@@ -436,8 +445,34 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 * Goroutines
 ###############################################################################
 
+* Goroutines
+
 - `go`
 - `channel`
+
+
+#########################
+* Goroutines (1/3)
+
+같은 주소 공간에서 다른 _goroutine_ 과 동시에 실행되는 함수
+
+    $ tar cfz foo.tar.gz foo/ &
+
+- `thread` 와 비슷한 액션
+- 만들기 쉬움
+- 가벼움
+
+
+#########################
+* Goroutines (2/3)
+
+.image goforjava/thread.png 480 600
+
+
+#########################
+* Goroutines (2/3)
+
+.image goforjava/goroutine.png 480 600
 
 
 #########################
@@ -464,6 +499,14 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 .play goforjava/channel.go /START OMIT/,/END OMIT/
 
 Do not communicate by sharing memory; instead, share memory by communicating.
+
+
+#########################
+* select
+
+.play goforjava/select.go /START OMIT/,/END OMIT/
+
+
 
 
 ###############################################################################

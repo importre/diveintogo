@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-    // START OMIT
+	// START OMIT
 	var i = 10 // var keyword // HL
 
 	var j int // var keyword with int type // HL
@@ -19,5 +19,5 @@ func main() {
 
 	fmt.Printf("%v %v %v\n", a, b, c)
 	fmt.Printf("%T %T %T\n", a, b, c)
-    // END OMIT
+	// END OMIT
 }

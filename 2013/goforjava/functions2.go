@@ -22,4 +22,5 @@ func main() {
 	closure("Hello")
 	closure("Golang")
 }
+
 // END OMIT
