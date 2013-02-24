@@ -346,9 +346,91 @@ Java와 마찬가지로 변형불가능한 타입(immutable type)
 * Collections
 ###############################################################################
 
+- `map`
+- `list`
+
+#########################
+* map? set!
+
+반드시 `make` 를 통해 생성
+
+.play goforjava/maps1.go /START OMIT/,/END OMIT/
+
+key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버로딩이 없음)
+`struct` 는 재귀적으로 비교하기 때문에 key로 가능 (Go 1.0 이후)
+값은 제약 없음
+
+
+#########################
+* map - range, delete
+
+`range` 로 순회 가능
+`delete` 내장 함수로 삭제`
+
+.play goforjava/maps2.go /START OMIT/,/END OMIT/
+
+
+#########################
+* list
+
+`map` 처럼 내장 타입이 아님
+
+.play goforjava/list.go /START OMIT/,/END OMIT/
+
+
 ###############################################################################
 * Handling Errors
 ###############################################################################
+
+#########################
+* Handling Errors
+
+- `error`
+- `panic`
+- `recover`
+- `defer`
+
+
+#########################
+* error (1/2)
+
+아래 인터페이스를 등록해 놓으면, `error` 를 반환할 때 자동 호출
+
+    type error interface {
+        Error() string
+    }
+
+
+#########################
+* error (2/2)
+
+.play goforjava/error.go /START OMIT/,/END OMIT/
+
+
+#########################
+* panic, recover, defer
+
+- `throw`, `exception`
+
+.play goforjava/panic.go /START OMIT/,/END OMIT/
+
+
+#########################
+* defer (1/2)
+
+함수 반환 시점에 호출됨
+Stack과 같이 먼저 들어간 작업이 나중에 호출됨
+
+.play goforjava/defer1.go /START OMIT/,/END OMIT/
+
+
+#########################
+* defer (2/2)
+
+- An example
+
+.code goforjava/defer2.go /START OMIT/,/END OMIT/
+
 
 ###############################################################################
 * Goroutines
