@@ -436,6 +436,36 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 * Goroutines
 ###############################################################################
 
+- `go`
+- `channel`
+
+
+#########################
+* go
+
+- [[goforjava/go1.go][Source]]
+
+.play goforjava/go1.go /START OMIT/,/END OMIT/
+
+
+#########################
+* go
+
+`go` 를 함수 앞에!
+
+.play goforjava/go2.go /START OMIT/,/END OMIT/
+
+
+#########################
+* channel
+
+- [[goforjava/channel.go][Source]]
+
+.play goforjava/channel.go /START OMIT/,/END OMIT/
+
+Do not communicate by sharing memory; instead, share memory by communicating.
+
+
 ###############################################################################
 * GDG Korea Golang
 ###############################################################################
