@@ -5,7 +5,7 @@ import (
 )
 
 // START OMIT
-type floor int
+type floor int // HL
 
 func main() {
 	var f floor = 1

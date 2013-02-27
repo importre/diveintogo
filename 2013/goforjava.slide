@@ -26,7 +26,9 @@ GDG Korea Golang
 #########################
 * Go Designers
 
-.image goforjava/rob_pike.png 255 300
+- Gopher
+
+.image goforjava/gophercolor.png 280 280
 
 - 롭 파이크(Rob Pike)
 - 켄 톰슨(Ken Thompson)
@@ -36,7 +38,7 @@ GDG Korea Golang
 #########################
 * Advantages
 
-- 동시성(Conccurency)
+- 동시실행 (Concurrency)
 - 빠른 속도
 - 간결한 문법
 - 낮은 의존성
@@ -82,11 +84,11 @@ Three parts
 #########################
 * Variables
 
-.play goforjava/variables.go /START OMIT/,/END OMIT/
-
 - `var` 키워드 사용
 - `:=` 초기화 연산자 사용
 - Java와 다르게 원시 타입의 포인터를 만들 수 있음
+
+.play goforjava/variables.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -276,17 +278,29 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 .play goforjava/arrays2.go /START OMIT/,/END OMIT/
 
-별칭(예: 레퍼런스)을 붙이는 것이 빠르겠지만, 동시성을 위한 코드에서는 버그 유발
+별칭(레퍼런스?!)을 붙이는 것이 빠르겠지만,
+동시성을 위한 코드에서는 버그 유발 위험
+
 따라서 빠르고 정확한 코딩을 위해 Go에서는 복사하는 것이 기본
 
 
 #########################
-* Slices
+* Slices (1/2)
 
 슬라이스는 배열의 뷰
 종종 함수의 파라미터로 쓰임 (reference)
 
-.play goforjava/slices.go /START OMIT/,/END OMIT/
+.image goforjava/slice.png
+
+.play goforjava/slices1.go /START OMIT/,/END OMIT/
+
+
+#########################
+* Slices (2/2)
+
+기존 슬라이스에 다른 값을 추가한다면?!
+
+.play goforjava/slices2.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -313,6 +327,8 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 #########################
 * UTF-8 Designers
+
+.image goforjava/rob_pike.png 255 300
 
 - Rob Pike
 - Ken Thompson
@@ -456,10 +472,12 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 
 같은 주소 공간에서 다른 _goroutine_ 과 동시에 실행되는 함수
 
+- 백그라운드 작업
+
     $ tar cfz foo.tar.gz foo/ &
 
 - `thread` 와 비슷한 액션
-- 만들기 쉬움
+- 만들기 쉬움 (pthread도 쉬운데?!)
 - 가벼움
 
 
@@ -470,13 +488,21 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 
 
 #########################
-* Goroutines (2/3)
+* Goroutines (3/3)
 
 .image goforjava/goroutine.png 480 600
 
 
 #########################
-* go (1/2)
+* go (1/3)
+
+- Example: Google Search
+
+.image goforjava/search.jpg 480 600
+
+
+#########################
+* go (2/3)
 
 - [[goforjava/go1.go][Source]]
 
@@ -484,7 +510,7 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 
 
 #########################
-* go (2/2)
+* go (3/3)
 
 `go` 를 함수 앞에!
 

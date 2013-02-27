@@ -11,6 +11,6 @@ func main() {
 
 	// f = float64(i)
 	f = i // HL
-	fmt.Printf("%T", f)
+	fmt.Printf("%T\n", f)
 	// END OMIT
 }

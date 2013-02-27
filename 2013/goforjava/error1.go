@@ -6,25 +6,25 @@ import (
 
 // START OMIT
 type FileError struct {
-	path string
 }
 
 func (this *FileError) Error() string { // HL
-	if "" == this.path {
-		return "path error"
-	}
-	return ""
+	return "FileError"
 }
 
 func FileOpen(path string) error { // HL
-	return &FileError{path}
+	if "" == path {
+		return &FileError{}
+	}
+	return nil
 }
 
 func main() {
-	if err := FileOpen(""); nil != err {
+	if err := FileOpen(""); nil != err { // HL
 		fmt.Println(err)
 		return
 	}
+	fmt.Println("bye")
 }
 
 // END OMIT
