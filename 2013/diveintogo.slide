@@ -27,7 +27,7 @@ GDG Korea Golang
 
 - Gopher
 
-.image diveintogo/gophercolor.png 280 280
+.image diveintogo/gopher.jpg 280 280
 
 - 롭 파이크(Rob Pike)
 - 켄 톰슨(Ken Thompson)
@@ -50,7 +50,7 @@ GDG Korea Golang
 #########################
 * The Structure of a .go (1/2)
 
-- diveintogo.go
+- hellogo.go
 
 .play diveintogo/hellogo.go
 
@@ -528,5 +528,8 @@ Do not communicate by sharing memory; instead, share memory by communicating.
 
 .image diveintogo/GDG_Korea_Golang.png
 
+- [[http://golang.org/][http://golang.org]]
+- [[http://tour.golang.org/][http://tour.golang.org]]
+- [[http://godoc.org/][http://godoc.org]]
 - [[https://plus.google.com/112714242728066184635/][Google+ Community]]
 
