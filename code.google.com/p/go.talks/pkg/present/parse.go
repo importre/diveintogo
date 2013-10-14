@@ -5,6 +5,7 @@
 package present
 
 import (
+	"bufio"
 	"bytes"
 	"errors"
 	"fmt"
@@ -21,7 +22,7 @@ import (
 )
 
 var (
-	parsers = make(map[string]func(string, int, string) (Elem, error))
+	parsers = make(map[string]ParseFunc)
 	funcs   = template.FuncMap{}
 )
 
@@ -40,7 +41,7 @@ func (d *Doc) Render(w io.Writer, t *template.Template) error {
 	return t.ExecuteTemplate(w, "root", data)
 }
 
-type ParseFunc func(fileName string, lineNumber int, inputLine string) (Elem, error)
+type ParseFunc func(ctx *Context, fileName string, lineNumber int, inputLine string) (Elem, error)
 
 // Register binds the named action, which does not begin with a period, to the
 // specified parser to be invoked when the name, with a period, appears in the
@@ -90,8 +91,8 @@ type Section struct {
 
 func (s Section) Sections() (sections []Section) {
 	for _, e := range s.Elem {
-		if s, ok := e.(Section); ok {
-			sections = append(sections, s)
+		if section, ok := e.(Section); ok {
+			sections = append(sections, section)
 		}
 	}
 	return
@@ -171,11 +172,15 @@ type Lines struct {
 }
 
 func readLines(r io.Reader) (*Lines, error) {
-	contentBytes, err := ioutil.ReadAll(r)
-	if err != nil {
+	var lines []string
+	s := bufio.NewScanner(r)
+	for s.Scan() {
+		lines = append(lines, s.Text())
+	}
+	if err := s.Err(); err != nil {
 		return nil, err
 	}
-	return &Lines{0, strings.Split(string(contentBytes), "\n")}, nil
+	return &Lines{0, lines}, nil
 }
 
 func (l *Lines) next() (text string, ok bool) {
@@ -212,6 +217,12 @@ func (l *Lines) nextNonEmpty() (text string, ok bool) {
 	return
 }
 
+// A Context specifies the supporting context for parsing a presentation.
+type Context struct {
+	// ReadFile reads the file named by filename and returns the contents.
+	ReadFile func(filename string) ([]byte, error)
+}
+
 // ParseMode represents flags for the Parse function.
 type ParseMode int
 
@@ -220,8 +231,8 @@ const (
 	TitlesOnly ParseMode = 1
 )
 
-// Parse parses the document in the file specified by name.
-func Parse(r io.Reader, name string, mode ParseMode) (*Doc, error) {
+// Parse parses a document from r.
+func (ctx *Context) Parse(r io.Reader, name string, mode ParseMode) (*Doc, error) {
 	doc := new(Doc)
 	lines, err := readLines(r)
 	if err != nil {
@@ -239,10 +250,17 @@ func Parse(r io.Reader, name string, mode ParseMode) (*Doc, error) {
 		return nil, err
 	}
 	// Sections
-	if doc.Sections, err = parseSections(name, lines, []int{}, doc); err != nil {
+	if doc.Sections, err = parseSections(ctx, name, lines, []int{}, doc); err != nil {
 		return nil, err
 	}
 	return doc, nil
+}
+
+// Parse parses a document from r. Parse reads assets used by the presentation
+// from the file system using ioutil.ReadFile.
+func Parse(r io.Reader, name string, mode ParseMode) (*Doc, error) {
+	ctx := Context{ReadFile: ioutil.ReadFile}
+	return ctx.Parse(r, name, mode)
 }
 
 // isHeading matches any section heading.
@@ -256,7 +274,7 @@ func lesserHeading(text, prefix string) bool {
 
 // parseSections parses Sections from lines for the section level indicated by
 // number (a nil number indicates the top level).
-func parseSections(name string, lines *Lines, number []int, doc *Doc) ([]Section, error) {
+func parseSections(ctx *Context, name string, lines *Lines, number []int, doc *Doc) ([]Section, error) {
 	var sections []Section
 	for i := 1; ; i++ {
 		// Next non-empty line is title.
@@ -312,7 +330,7 @@ func parseSections(name string, lines *Lines, number []int, doc *Doc) ([]Section
 				e = List{Bullet: b}
 			case strings.HasPrefix(text, prefix+"* "):
 				lines.back()
-				subsecs, err := parseSections(name, lines, section.Number, doc)
+				subsecs, err := parseSections(ctx, name, lines, section.Number, doc)
 				if err != nil {
 					return nil, err
 				}
@@ -325,7 +343,7 @@ func parseSections(name string, lines *Lines, number []int, doc *Doc) ([]Section
 				if parser == nil {
 					return nil, fmt.Errorf("%s:%d: unknown command %q\n", name, lines.line, text)
 				}
-				t, err := parser(name, lines.line, text)
+				t, err := parser(ctx, name, lines.line, text)
 				if err != nil {
 					return nil, err
 				}
@@ -433,14 +451,14 @@ func parseAuthors(lines *Lines) (authors []Author, err error) {
 		switch {
 		case strings.HasPrefix(text, "@"):
 			el = parseURL("http://twitter.com/" + text[1:])
-			if l, ok := el.(Link); ok {
-				l.Label = text
-				el = l
-			}
 		case strings.Contains(text, ":"):
 			el = parseURL(text)
 		case strings.Contains(text, "@"):
 			el = parseURL("mailto:" + text)
+		}
+		if l, ok := el.(Link); ok {
+			l.Label = text
+			el = l
 		}
 		if el == nil {
 			el = Text{Lines: []string{text}}

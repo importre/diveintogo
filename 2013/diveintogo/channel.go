@@ -30,12 +30,13 @@ func main() {
 	fmt.Println("start")
 	defer fmt.Println("stop")
 
-	c := make(chan string) // HL
+	c1 := make(chan string) // HL
+	c2 := make(chan string) // HL
 
-	go SearchBlog(c)
-	go SearchImage(c)
+	go SearchBlog(c1)
+	go SearchImage(c2)
 
-	blogData, imageData := <-c, <-c // HL
+	blogData, imageData := <-c1, <-c2 // HL
 	fmt.Println()
 	fmt.Println(blogData)
 	fmt.Println(imageData)

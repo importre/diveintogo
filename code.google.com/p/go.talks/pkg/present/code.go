@@ -5,15 +5,14 @@
 package present
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
 	"html/template"
-	"io/ioutil"
-	"log"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
-	"unicode"
 )
 
 // Is the playground available?
@@ -39,10 +38,13 @@ func (c Code) TemplateName() string { return "code" }
 // The input line is a .code or .play entry with a file name and an optional HLfoo marker on the end.
 // Anything between the file and HL (if any) is an address expression, which we treat as a string here.
 // We pick off the HL first, for easy parsing.
-var highlightRE = regexp.MustCompile(`\s+HL([a-zA-Z0-9_]+)?$`)
-var codeRE = regexp.MustCompile(`\.(code|play)\s+([^\s]+)(\s+)?(.*)?$`)
+var (
+	highlightRE = regexp.MustCompile(`\s+HL([a-zA-Z0-9_]+)?$`)
+	hlCommentRE = regexp.MustCompile(`(.+) // HL(.*)$`)
+	codeRE      = regexp.MustCompile(`\.(code|play)\s+([^\s]+)(\s+)?(.*)?$`)
+)
 
-func parseCode(sourceFile string, sourceLine int, cmd string) (Elem, error) {
+func parseCode(ctx *Context, sourceFile string, sourceLine int, cmd string) (Elem, error) {
 	cmd = strings.TrimSpace(cmd)
 
 	// Pull off the HL, if any, from the end of the input line.
@@ -68,7 +70,7 @@ func parseCode(sourceFile string, sourceLine int, cmd string) (Elem, error) {
 
 	// Read in code file and (optionally) match address.
 	filename := filepath.Join(filepath.Dir(sourceFile), file)
-	textBytes, err := ioutil.ReadFile(filename)
+	textBytes, err := ctx.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("%s:%d: %v", sourceFile, sourceLine, err)
 	}
@@ -77,52 +79,108 @@ func parseCode(sourceFile string, sourceLine int, cmd string) (Elem, error) {
 		return nil, fmt.Errorf("%s:%d: %v", sourceFile, sourceLine, err)
 	}
 
-	// Acme pattern matches stop mid-line,
-	// so run to end of line in both directions.
+	// Acme pattern matches can stop mid-line,
+	// so run to end of line in both directions if not at line start/end.
 	for lo > 0 && textBytes[lo-1] != '\n' {
 		lo--
 	}
-	for hi < len(textBytes) {
-		hi++
-		if textBytes[hi-1] == '\n' {
-			break
+	if hi > 0 {
+		for hi < len(textBytes) && textBytes[hi-1] != '\n' {
+			hi++
 		}
 	}
-	text := string(textBytes[lo:hi])
 
-	// Clear ommitted lines.
-	text = skipOMIT(text)
+	lines := codeLines(textBytes, lo, hi)
 
-	// Replace tabs by spaces, which work better in HTML.
-	text = strings.Replace(text, "\t", "    ", -1)
+	for i, line := range lines {
+		// Replace tabs by spaces, which work better in HTML.
+		line.L = strings.Replace(line.L, "\t", "    ", -1)
 
-	// Escape the program text for HTML.
-	text = template.HTMLEscapeString(text)
+		// Highlight lines that end with "// HL[highlight]"
+		// and strip the magic comment.
+		if m := hlCommentRE.FindStringSubmatch(line.L); m != nil {
+			line.L = m[1]
+			line.HL = m[2] == highlight
+		}
 
-	// Highlight and span-wrap lines.
-	text = "<pre>" + highlightLines(text, highlight) + "</pre>"
+		lines[i] = line
+	}
+
+	data := &codeTemplateData{Lines: lines}
 
 	// Include before and after in a hidden span for playground code.
 	if play {
-		text = hide(skipOMIT(string(textBytes[:lo]))) +
-			text + hide(skipOMIT(string(textBytes[hi:])))
+		data.Prefix = textBytes[:lo]
+		data.Suffix = textBytes[hi:]
 	}
 
-	// Include the command as a comment.
-	text = fmt.Sprintf("<!--{{%s}}\n-->%s", cmd, text)
-
-	return Code{Text: template.HTML(text), Play: play}, nil
+	var buf bytes.Buffer
+	if err := codeTemplate.Execute(&buf, data); err != nil {
+		return nil, err
+	}
+	return Code{Text: template.HTML(buf.String()), Play: play}, nil
 }
 
-// skipOMIT turns text into a string, dropping lines ending with OMIT.
-func skipOMIT(text string) string {
-	lines := strings.SplitAfter(text, "\n")
-	for k := range lines {
-		if strings.HasSuffix(lines[k], "OMIT\n") {
-			lines[k] = ""
+type codeTemplateData struct {
+	Lines          []codeLine
+	Prefix, Suffix []byte
+}
+
+var leadingSpaceRE = regexp.MustCompile(`^[ \t]*`)
+
+var codeTemplate = template.Must(template.New("code").Funcs(template.FuncMap{
+	"trimSpace":    strings.TrimSpace,
+	"leadingSpace": leadingSpaceRE.FindString,
+}).Parse(codeTemplateHTML))
+
+const codeTemplateHTML = `
+{{with .Prefix}}<pre style="display: none"><span>{{printf "%s" .}}</span></pre>{{end}}
+
+<pre>{{range .Lines}}<span num="{{.N}}">{{/*
+	*/}}{{if .HL}}{{leadingSpace .L}}<b>{{trimSpace .L}}</b>{{/*
+	*/}}{{else}}{{.L}}{{end}}{{/*
+*/}}</span>
+{{end}}</pre>
+
+{{with .Suffix}}<pre style="display: none"><span>{{printf "%s" .}}</span></pre>{{end}}
+`
+
+// codeLine represents a line of code extracted from a source file.
+type codeLine struct {
+	L  string // The line of code.
+	N  int    // The line number from the source file.
+	HL bool   // Whether the line should be highlighted.
+}
+
+// codeLines takes a source file and returns the lines that
+// span the byte range specified by start and end.
+// It discards lines that end in "OMIT".
+func codeLines(src []byte, start, end int) (lines []codeLine) {
+	startLine := 1
+	for i, b := range src {
+		if i == start {
+			break
+		}
+		if b == '\n' {
+			startLine++
 		}
 	}
-	return strings.Join(lines, "")
+	s := bufio.NewScanner(bytes.NewReader(src[start:end]))
+	for n := startLine; s.Scan(); n++ {
+		l := s.Text()
+		if strings.HasSuffix(l, "OMIT") {
+			continue
+		}
+		lines = append(lines, codeLine{L: l, N: n})
+	}
+	// Trim leading and trailing blank lines.
+	for len(lines) > 0 && len(lines[0].L) == 0 {
+		lines = lines[1:]
+	}
+	for len(lines) > 0 && len(lines[len(lines)-1].L) == 0 {
+		lines = lines[:len(lines)-1]
+	}
+	return
 }
 
 func parseArgs(name string, line int, args []string) (res []interface{}, err error) {
@@ -153,73 +211,17 @@ func parseArgs(name string, line int, args []string) (res []interface{}, err err
 }
 
 // parseArg returns the integer or string value of the argument and tells which it is.
-func parseArg(arg interface{}, file string, max int) (ival int, sval string, isInt bool) {
+func parseArg(arg interface{}, max int) (ival int, sval string, isInt bool, err error) {
 	switch n := arg.(type) {
 	case int:
 		if n <= 0 || n > max {
-			log.Fatalf("%q:%d is out of range", file, n)
+			return 0, "", false, fmt.Errorf("%d is out of range", n)
 		}
-		return n, "", true
+		return n, "", true, nil
 	case string:
-		return 0, n, false
+		return 0, n, false, nil
 	}
-	log.Fatalf("unrecognized argument %v type %T", arg, arg)
-	return
-}
-
-// oneLine returns the single line generated by a two-argument code invocation.
-func oneLine(file, text string, arg interface{}) (line, before, after string, err error) {
-	contentBytes, err := ioutil.ReadFile(file)
-	if err != nil {
-		return "", "", "", err
-	}
-	lines := strings.SplitAfter(string(contentBytes), "\n")
-	lineNum, pattern, isInt := parseArg(arg, file, len(lines))
-	var n int
-	if isInt {
-		n = lineNum - 1
-	} else {
-		n, err = match(file, 0, lines, pattern)
-		n -= 1
-	}
-	if err != nil {
-		return "", "", "", err
-	}
-	return lines[n],
-		strings.Join(lines[:n], ""),
-		strings.Join(lines[n+1:], ""),
-		nil
-}
-
-// multipleLines returns the text generated by a three-argument code invocation.
-func multipleLines(file string, arg1, arg2 interface{}) (line, before, after string, err error) {
-	contentBytes, err := ioutil.ReadFile(file)
-	lines := strings.SplitAfter(string(contentBytes), "\n")
-	if err != nil {
-		return "", "", "", err
-	}
-	line1, pattern1, isInt1 := parseArg(arg1, file, len(lines))
-	line2, pattern2, isInt2 := parseArg(arg2, file, len(lines))
-	if !isInt1 {
-		line1, err = match(file, 0, lines, pattern1)
-	}
-	if !isInt2 {
-		line2, err = match(file, line1, lines, pattern2)
-	} else if line2 < line1 {
-		return "", "", "", fmt.Errorf("lines out of order for %q: %d %d", file, line1, line2)
-	}
-	if err != nil {
-		return "", "", "", err
-	}
-	for k := line1 - 1; k < line2; k++ {
-		if strings.HasSuffix(lines[k], "OMIT\n") {
-			lines[k] = ""
-		}
-	}
-	return strings.Join(lines[line1-1:line2], ""),
-		strings.Join(lines[:line1-1], ""),
-		strings.Join(lines[line2:], ""),
-		nil
+	return 0, "", false, fmt.Errorf("unrecognized argument %v type %T", arg, arg)
 }
 
 // match identifies the input line that matches the pattern in a code invocation.
@@ -247,36 +249,4 @@ func match(file string, start int, lines []string, pattern string) (int, error) 
 		return 0, fmt.Errorf("%s: no match for %#q", file, pattern)
 	}
 	return 0, fmt.Errorf("unrecognized pattern: %q", pattern)
-}
-
-var hlRE = regexp.MustCompile(`(.+) // HL(.*)$`)
-
-// highlightLines emboldens lines that end with "// HL" and
-// wraps any other lines in span tags.
-func highlightLines(text, label string) string {
-	lines := strings.Split(text, "\n")
-	for i, line := range lines {
-		m := hlRE.FindStringSubmatch(line)
-		if m == nil {
-			continue
-		}
-		line := m[1]
-		if m[2] != "" && m[2] != label {
-			lines[i] = line
-			continue
-		}
-		space := ""
-		if j := strings.IndexFunc(line, func(r rune) bool {
-			return !unicode.IsSpace(r)
-		}); j > 0 {
-			space = line[:j]
-			line = line[j:]
-		}
-		lines[i] = space + "<b>" + line + "</b>"
-	}
-	return strings.Join(lines, "\n")
-}
-
-func hide(text string) string {
-	return fmt.Sprintf(`<pre style="display: none">%s</pre>`, template.HTMLEscapeString(text))
 }

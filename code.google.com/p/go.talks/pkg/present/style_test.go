@@ -5,6 +5,7 @@
 package present
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -31,6 +32,8 @@ func TestSplit(t *testing.T) {
 			[]string{"[[http://golang.org][foo bar]]"}},
 		{"ends with [[http://golang.org][link]]",
 			[]string{"ends", " ", "with", " ", "[[http://golang.org][link]]"}},
+		{"my talk ([[http://talks.golang.org/][slides here]])",
+			[]string{"my", " ", "talk", " ", "(", "[[http://talks.golang.org/][slides here]]", ")"}},
 	}
 	for _, test := range tests {
 		out := split(test.in)
@@ -66,7 +69,9 @@ func TestFont(t *testing.T) {
 		{"_hey_ [[http://golang.org][so _many_ *Gophers*]] *around*",
 			`<i>hey</i> <a href="http://golang.org" target="_blank">so <i>many</i> <b>Gophers</b></a> <b>around</b>`},
 		{"Visit [[http://golang.org]] now",
-			`Visit <a href="http://golang.org" target="_blank">http://golang.org</a> now`},
+			`Visit <a href="http://golang.org" target="_blank">golang.org</a> now`},
+		{"my talk ([[http://talks.golang.org/][slides here]])",
+			`my talk (<a href="http://talks.golang.org/" target="_blank">slides here</a>)`},
 	}
 	for _, test := range tests {
 		out := font(test.in)
@@ -97,9 +102,15 @@ func TestStyle(t *testing.T) {
 		{"(_a)", "(_a)"},
 	}
 	for _, test := range tests {
-		out := string(style(test.in))
+		out := string(Style(test.in))
 		if out != test.out {
 			t.Errorf("style(%q):\ngot\t%q\nwant\t%q", test.in, out, test.out)
 		}
 	}
+}
+
+func ExampleStyle() {
+	const s = "*Gophers* are _clearly_ > *cats*!"
+	fmt.Println(Style(s))
+	// Output: <b>Gophers</b> are <i>clearly</i> &gt; <b>cats</b>!
 }

@@ -1,10 +1,9 @@
-Go for Java Programmers
+Dive into Go
 A Go Primer
-2 Mar 2013
+16 Oct 2013
 
 허재위
 GDG Korea Golang
-@importre
 
 
 #########################
@@ -28,7 +27,7 @@ GDG Korea Golang
 
 - Gopher
 
-.image goforjava/gophercolor.png 280 280
+.image diveintogo/gophercolor.png 280 280
 
 - 롭 파이크(Rob Pike)
 - 켄 톰슨(Ken Thompson)
@@ -51,13 +50,9 @@ GDG Korea Golang
 #########################
 * The Structure of a .go (1/2)
 
-- hellogo.go
+- diveintogo.go
 
-.play goforjava/hellogo.go
-
-- HelloJava.java
-
-.code goforjava/HelloJava.java
+.play diveintogo/hellogo.go
 
 
 #########################
@@ -68,11 +63,10 @@ Three parts
 - package
 
     main 인 경우 반드시 func main()이 존재해야 함
-    Java와 달리 파라미터 없음 (전역으로 존재)
 
 - import
 
-    Java와 달리 코드가 링크될 때 package가 import 됨
+    코드가 링크될 때 package가 import 됨
     Go 프로그램이 package가 없어서 죽지 않도록 보장
     import를 통해 참조되는 package에 대해 플래그를 링커에 제공할 필요 없음
 
@@ -86,9 +80,9 @@ Three parts
 
 - `var` 키워드 사용
 - `:=` 초기화 연산자 사용
-- Java와 다르게 원시 타입의 포인터를 만들 수 있음
+- 원시(primative) 타입의 포인터를 만들 수 있음
 
-.play goforjava/variables.go /START OMIT/,/END OMIT/
+.play diveintogo/variables.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -108,7 +102,7 @@ Three parts
 
 미리 리턴 변수 명을 정할 수 있음
 
-.play goforjava/functions1.go /START OMIT/,/END OMIT/
+.play diveintogo/functions1.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -116,7 +110,7 @@ Three parts
 
 - closure
 
-.play goforjava/functions2.go /START OMIT/,/END OMIT/
+.play diveintogo/functions2.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -140,17 +134,17 @@ Three parts
 
 - *switch*
 
-.play goforjava/switch.go /START OMIT/,/END OMIT/
+.play diveintogo/switch.go /START OMIT/,/END OMIT/
 
-`fallthrough` 를 넣으면 Java와 같이 `break` 가 필요
+`fallthrough` 를 넣으면 `break` 가 필요
 
 
 #########################
 * Loop (1/2)
 
 *for* 키워드 *만* 사용
-Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
-`++i` 는 syntax error
+`continue`, `break`, 레이블 사용 가능
+`for` 에서 `++i` 는 syntax error
 
 - `for`
 
@@ -176,7 +170,7 @@ Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
 
 - with `range`
 
-.play goforjava/loop.go /START OMIT/,/END OMIT/
+.play diveintogo/loop.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -184,7 +178,7 @@ Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
 
 *const*, *iota* 키워드 사용
 
-.play goforjava/enumerations.go /START OMIT/,/END OMIT/
+.play diveintogo/enumerations.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -192,7 +186,7 @@ Java와 마찬가지로 `continue`, `break`, 레이블 사용 가능
 
 *type*, *struct* 키워드 사용
 
-.code goforjava/structures.go /START OMIT/,/END OMIT/
+.code diveintogo/structures.go /START OMIT/,/END OMIT/
 
 Go 컴파일러 역시 함수 내에서 변수가 선언되면 스택에 할당됨
 하지만, 그 변수의 주소가 반환되면 힙에 할당 됨
@@ -201,7 +195,7 @@ Go 컴파일러 역시 함수 내에서 변수가 선언되면 스택에 할당�
 #########################
 * Methods (1/2)
 
-.play goforjava/methods1.go /START OMIT/,/END OMIT/
+.play diveintogo/methods1.go /START OMIT/,/END OMIT/
 
 - public
   
@@ -215,7 +209,7 @@ Go 컴파일러 역시 함수 내에서 변수가 선언되면 스택에 할당�
 #########################
 * package
 
-.image goforjava/package.png 480 600
+.image diveintogo/package.png 480 600
 
 
 #########################
@@ -223,7 +217,7 @@ Go 컴파일러 역시 함수 내에서 변수가 선언되면 스택에 할당�
 
 - Java의 `Integer` class
 
-.play goforjava/methods2.go /START OMIT/,/END OMIT/
+.play diveintogo/methods2.go /START OMIT/,/END OMIT/
 
 `struct` 뿐만 아니라 어떤 타입이든 method를 정의할 수 있음
 
@@ -234,13 +228,13 @@ Objective-C의 `category` 와 비슷하게
 #########################
 * Interfaces (1/2)
 
-.code goforjava/interfaces1.go /START OMIT/,/END OMIT/
+.code diveintogo/interfaces1.go /START OMIT/,/END OMIT/
 
 
 #########################
 * Interfaces (2/2)
 
-.play goforjava/interfaces2.go /START OMIT/,/END OMIT/
+.play diveintogo/interfaces2.go /START OMIT/,/END OMIT/
 
 Java와 다르게 명시적으로 붙여줄 필요 없음
 `struct` 가 `interface` 보다 먼저 선언되어야 하는 것은 아님
@@ -252,11 +246,11 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 묵시적 형변환을 허용하지 않음
 
-.play goforjava/types1.go /START OMIT/,/END OMIT/
+.play diveintogo/types1.go /START OMIT/,/END OMIT/
 
 같은 타입이어도 형변환 필요
 
-.play goforjava/types2.go /START OMIT/,/END OMIT/
+.play diveintogo/types2.go /START OMIT/,/END OMIT/
 
 
 ###############################################################################
@@ -268,7 +262,7 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 - Declarations
 
-.play goforjava/arrays1.go /START OMIT/,/END OMIT/
+.play diveintogo/arrays1.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -276,7 +270,7 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 - Copying an array
 
-.play goforjava/arrays2.go /START OMIT/,/END OMIT/
+.play diveintogo/arrays2.go /START OMIT/,/END OMIT/
 
 별칭(레퍼런스?!)을 붙이는 것이 빠르겠지만,
 동시성을 위한 코드에서는 버그 유발 위험
@@ -290,9 +284,9 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 슬라이스는 배열의 뷰
 종종 함수의 파라미터로 쓰임 (reference)
 
-.image goforjava/slice.png
+.image diveintogo/slice.png
 
-.play goforjava/slices1.go /START OMIT/,/END OMIT/
+.play diveintogo/slices1.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -300,25 +294,13 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 
 기존 슬라이스에 다른 값을 추가한다면?!
 
-.play goforjava/slices2.go /START OMIT/,/END OMIT/
+.play diveintogo/slices2.go /START OMIT/,/END OMIT/
 
 
 #########################
-* Iterating (1/2)
+* Iterating
 
-누가 빠른가? 
-`dump1` vs. `dump2`
-
-.play goforjava/iter1.go /START OMIT/,/END OMIT/
-
-
-#########################
-* Iterating (2/2)
-
-반복할 때마다 경계를 확인하기 보다는
-루프문 하나당 경계를 한 번 확인 할 수 있도록 `range` 를 사용
-
-.play goforjava/iter2.go /START OMIT/,/END OMIT/
+.play diveintogo/iter.go /START OMIT/,/END OMIT/
 
 
 ###############################################################################
@@ -328,7 +310,7 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 #########################
 * UTF-8 Designers
 
-.image goforjava/rob_pike.png 255 300
+.image diveintogo/rob_pike.png 255 300
 
 - Rob Pike
 - Ken Thompson
@@ -337,16 +319,16 @@ Java와 다르게 명시적으로 붙여줄 필요 없음
 * Strings
 
 Go는 UTF-8을 사용
-Java와 마찬가지로 변형불가능한 타입(immutable type)
-배열은 아니지만 배열처럼 slice 사용 가능
+immutable type
+배열처럼 slice 사용 가능
 
 인덱스 사용시 주의할 것
 
-.play goforjava/loop.go /START OMIT/,/END OMIT/
+.play diveintogo/loop.go /START OMIT/,/END OMIT/
 
 `rune` 타입 이용
 
-.play goforjava/strings.go /START OMIT/,/END OMIT/
+.play diveintogo/strings.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -373,7 +355,7 @@ Java와 마찬가지로 변형불가능한 타입(immutable type)
 
 반드시 `make` 를 통해 생성
 
-.play goforjava/maps1.go /START OMIT/,/END OMIT/
+.play diveintogo/maps1.go /START OMIT/,/END OMIT/
 
 key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버로딩이 없음)
 `struct` 는 재귀적으로 비교하기 때문에 key로 가능 (Go 1.0 이후)
@@ -386,7 +368,7 @@ key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버
 `range` 로 순회 가능
 `delete` 내장 함수로 삭제
 
-.play goforjava/maps2.go /START OMIT/,/END OMIT/
+.play diveintogo/maps2.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -394,7 +376,7 @@ key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버
 
 `map` 처럼 내장 타입이 아님
 
-.play goforjava/list.go /START OMIT/,/END OMIT/
+.play diveintogo/list.go /START OMIT/,/END OMIT/
 
 
 ###############################################################################
@@ -423,13 +405,13 @@ key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버
 #########################
 * error (2/3)
 
-.play goforjava/error1.go /START OMIT/,/END OMIT/
+.play diveintogo/error1.go /START OMIT/,/END OMIT/
 
 
 #########################
 * error (3/3)
 
-.play goforjava/error2.go
+.play diveintogo/error2.go
 
 
 #########################
@@ -437,7 +419,9 @@ key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버
 
 - `throw`, `exception`
 
-.play goforjava/panic.go /START OMIT/,/END OMIT/
+.play diveintogo/panic.go /START OMIT/,/END OMIT/
+
+- Go 1.1 부터 `Int` / `0` 는 컴파일 에러
 
 
 #########################
@@ -446,7 +430,7 @@ key 값은 `==` 연산자로 비교할 수 있어야 함 (Go는 연산자 오버
 함수 반환 시점에 호출됨
 Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 
-.play goforjava/defer1.go /START OMIT/,/END OMIT/
+.play diveintogo/defer1.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -454,7 +438,7 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 
 - An example
 
-.code goforjava/defer2.go /START OMIT/,/END OMIT/
+.code diveintogo/defer2.go /START OMIT/,/END OMIT/
 
 
 ###############################################################################
@@ -484,13 +468,13 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 #########################
 * Goroutines (2/3)
 
-.image goforjava/thread.png 480 600
+.image diveintogo/thread.png 480 600
 
 
 #########################
 * Goroutines (3/3)
 
-.image goforjava/goroutine.png 480 600
+.image diveintogo/goroutine.png 480 600
 
 
 #########################
@@ -498,15 +482,15 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 
 - Example: Google Search
 
-.image goforjava/search.jpg 480 600
+.image diveintogo/search.jpg 480 600
 
 
 #########################
 * go (2/3)
 
-- [[goforjava/go1.go][Source]]
+- [[diveintogo/go1.go][Source]]
 
-.play goforjava/go1.go /START OMIT/,/END OMIT/
+.play diveintogo/go1.go /START OMIT/,/END OMIT/
 
 
 #########################
@@ -514,15 +498,15 @@ Stack과 같이 먼저 들어간 작업이 나중에 호출됨
 
 `go` 를 함수 앞에!
 
-.play goforjava/go2.go /START OMIT/,/END OMIT/
+.play diveintogo/go2.go /START OMIT/,/END OMIT/
 
 
 #########################
 * channel
 
-- [[goforjava/channel.go][Source]]
+- [[diveintogo/channel.go][Source]]
 
-.play goforjava/channel.go /START OMIT/,/END OMIT/
+.play diveintogo/channel.go /START OMIT/,/END OMIT/
 
 Do not communicate by sharing memory; instead, share memory by communicating.
 
@@ -530,7 +514,7 @@ Do not communicate by sharing memory; instead, share memory by communicating.
 #########################
 * select
 
-.play goforjava/select.go /START OMIT/,/END OMIT/
+.play diveintogo/select.go /START OMIT/,/END OMIT/
 
 
 
@@ -542,10 +526,7 @@ Do not communicate by sharing memory; instead, share memory by communicating.
 #########################
 * GDG Korea Golang
 
-.image goforjava/GDG_Korea_Golang.png
+.image diveintogo/GDG_Korea_Golang.png
 
-- [[http://golang.kr][http://golang.kr]]
-- [[https://plus.google.com/112714242728066184635/][Google+ Community]] *
-- [[https://groups.google.com/forum/?fromgroups#!forum/golang-korea][Google Groups]]
-- [[http://go-tour-kr.appspot.com][A Tour of Go in Korean]]
+- [[https://plus.google.com/112714242728066184635/][Google+ Community]]
 
